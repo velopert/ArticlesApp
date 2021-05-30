@@ -8,6 +8,7 @@ import {getComments} from '../api/comments';
 import ArticleView from '../components/ArticleView';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CommentItem from '../components/CommentItem';
+import {useUserState} from '../contexts/UserContext';
 
 type ArticleScreenRouteProp = RouteProp<RootStackParamList, 'Article'>;
 
@@ -19,6 +20,7 @@ function ArticleScreen() {
   const commentsQuery = useQuery(['comments', id], () => getComments(id));
 
   const {bottom} = useSafeAreaInsets();
+  const [currentUser] = useUserState();
 
   // 둘 중 하나라도 준비되지 않은 데이터가 있으면 스피너 보여주기
   if (!articleQuery.data || !commentsQuery.data) {
@@ -28,6 +30,7 @@ function ArticleScreen() {
   }
 
   const {title, body, published_at, user} = articleQuery.data;
+  const isMyArticle = currentUser?.id === user.id;
 
   return (
     <FlatList
@@ -49,6 +52,8 @@ function ArticleScreen() {
           body={body}
           publishedAt={published_at}
           username={user.username}
+          id={id}
+          isMyArticle={isMyArticle}
         />
       }
     />
