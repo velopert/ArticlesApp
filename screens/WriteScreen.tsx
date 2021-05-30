@@ -10,7 +10,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/core';
 import {RootStackNavigationProp} from './types';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useMutation, useQueryClient} from 'react-query';
+import {InfiniteData, useMutation, useQueryClient} from 'react-query';
 import {writeArticle} from '../api/articles';
 import {Article} from '../api/types';
 
@@ -21,10 +21,20 @@ function WriteScreen() {
   const queryClient = useQueryClient();
   const {mutate: write} = useMutation(writeArticle, {
     onSuccess: article => {
-      // 캐시 키로 데이터 조회 후 그 데이터를 업데이터 함수를 사용하여 업데이트
-      queryClient.setQueryData<Article[]>('articles', articles =>
-        (articles ?? []).concat(article),
-      );
+      queryClient.setQueryData<InfiniteData<Article[]>>('articles', data => {
+        if (!data) {
+          return {
+            pageParams: [undefined],
+            pages: [[article]],
+          };
+        }
+        const [firstPage, ...rest] = data.pages; // 첫번째 페이지와 나머지 페이지를 구분
+        return {
+          ...data,
+          // 첫번째 페이지에 article을 맨 앞에 추가, 그리고 그 뒤에 나머지 페이지
+          pages: [[article, ...firstPage], ...rest],
+        };
+      });
       navigation.goBack();
     },
   });
