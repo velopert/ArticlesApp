@@ -12,6 +12,7 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
+import UserMenuScreen from './UserMenuScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -36,13 +37,25 @@ function MainTab() {
   }, [route, navigation]);
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{
+        showLabel: false,
+      }}>
       <Tab.Screen
         name="Articles"
         component={ArticlesScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="article" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="UserMenu"
+        component={UserMenuScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="person" color={color} size={size} />
           ),
         }}
       />
