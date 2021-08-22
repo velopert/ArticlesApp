@@ -4,7 +4,7 @@ import {
   NavigatorScreenParams,
   RouteProp,
 } from '@react-navigation/core';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 /* MainTab */
 export type MainTabParamList = {
@@ -33,4 +33,5 @@ export type RootStackParamList = {
     articleId?: number;
   };
 };
-export type RootStackNavigationProp = StackNavigationProp<RootStackParamList>;
+export type RootStackNavigationProp =
+  NativeStackNavigationProp<RootStackParamList>;

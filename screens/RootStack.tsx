@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types';
 import MainTab from './MainTab';
 import ArticleScreen from './ArticleScreen';
@@ -9,14 +9,18 @@ import MyArticlesScreen from './MyArticlesScreen';
 import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
 import WriteScreen from './WriteScreen';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
   useAuthLoadEffect();
 
   return (
     <Stack.Navigator screenOptions={{headerBackTitle: '닫기'}}>
-      <Stack.Screen name="MainTab" component={MainTab} />
+      <Stack.Screen
+        name="MainTab"
+        component={MainTab}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Article"
         options={{title: '게시글'}}

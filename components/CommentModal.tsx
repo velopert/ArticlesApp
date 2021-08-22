@@ -6,8 +6,8 @@ import {
   KeyboardAvoidingView,
   Pressable,
   Platform,
+  TextInput,
 } from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export interface CommentFormProps {
